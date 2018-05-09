@@ -55,7 +55,7 @@ class EverythingDirectory_Listings {
 
 		#add_action( 'admin_head', array( $this, 'admin_style' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_js' ) );
-
+        
 		add_filter( 'search_template', array( $this, 'search_template' ) );
 
 		add_filter( 'genesis_build_crumbs', array( $this, 'breadcrumbs' ), 10, 2 );
@@ -98,9 +98,7 @@ class EverythingDirectory_Listings {
 	}
 
 	function register_meta_boxes() {
-
         add_meta_box( 'listing_details_metabox', __( 'Other Details', 'everything-directory' ), array( &$this, 'listing_details_metabox' ), 'listing', 'normal', 'high' );
-
 	}
 
 	function listing_details_metabox() {

@@ -80,8 +80,10 @@ function everythingdir_listings_init() {
 	require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 	require_once( dirname( __FILE__ ) . '/includes/class-listings.php' );
 	require_once( dirname( __FILE__ ) . '/includes/class-taxonomies.php' );
-	require_once( dirname( __FILE__ ) . '/includes/class-featured-listings-widget.php' );
-	require_once( dirname( __FILE__ ) . '/includes/class-property-search-widget.php' );
+    //require_once( dirname( __FILE__ ) . '/includes/class-featured-listings-widget.php' );
+    //require_once( dirname( __FILE__ ) . '/includes/class-property-search-widget.php' );
+    require_once( dirname( __FILE__ ) . '/includes/class-listings-widget.php' );
+    require_once( dirname( __FILE__ ) . '/includes/class-listing-sidebar-widget.php' );
 
 	/** Instantiate */
 	$_everythingdir_listings = new EverythingDirectory_Listings;
@@ -98,7 +100,11 @@ function everythingdir_listings_init() {
  */
 function everythingdir_register_widgets() {
 
-	$widgets = array( 'EverythingDirectory_Featured_Listings_Widget', 'EverythingDirectory_Listings_Search_Widget' );
+	$widgets = array(
+        //'EverythingDirectory_Featured_Listings_Widget',
+        //'EverythingDirectory_Listings_Search_Widget',
+        'EverythingDirectory_Listing_Sidebar_Widget',
+        'EverythingDirectory_Listings_Widget');
 
 	foreach ( (array) $widgets as $widget ) {
 		register_widget( $widget );

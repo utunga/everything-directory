@@ -1,4 +1,3 @@
-<?php screen_icon( 'themes' ); ?>
 <h2><?php _e( 'Listing Taxonomies', 'everything-directory' ); ?></h2>
 
 <div id="col-container">

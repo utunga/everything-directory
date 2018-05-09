@@ -294,11 +294,14 @@ class EverythingDirectory_Taxonomies {
 	 */
 	function register_taxonomies() {
 
-		foreach( (array) $this->get_taxonomies() as $id => $data ) {
-			register_taxonomy( $id, array( 'listing' ), $data );
-		}
 
-        register_taxonomy( 'post_tag', array( 'listing', 'post' ));
+        // dont do any of this as we let it get handled by the custom post stuff
+
+        foreach( (array) $this->get_taxonomies() as $id => $data ) {
+            register_taxonomy( $id, array( 'listing' ), $data );
+        }
+
+        //register_taxonomy( 'post_tag', array(  'listing', 'post' ));
         //register_taxonomy( 'post_category', array( 'listing', 'post' ));
 
 	}
