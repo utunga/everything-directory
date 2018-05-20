@@ -55,7 +55,8 @@ class EverythingDirectory_Listings {
 
 		#add_action( 'admin_head', array( $this, 'admin_style' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_js' ) );
-        
+        add_action( 'wp_enqueue_scripts', array( $this, 'all_js' ) );
+
 		add_filter( 'search_template', array( $this, 'search_template' ) );
 
 		add_filter( 'genesis_build_crumbs', array( $this, 'breadcrumbs' ), 10, 2 );
@@ -237,16 +238,16 @@ class EverythingDirectory_Listings {
 	}
 
 	function property_video_shortcode( $atts ) {
-
 		return genesis_get_custom_field( '_listing_video' );
-
 	}
 
 	function admin_js() {
-
 		wp_enqueue_script( 'accesspress-admin-js', APL_URL . 'includes/js/admin.js', array(), APL_VERSION, true );
-
 	}
+
+    function all_js() {
+        wp_enqueue_script( 'jquery.liveFilter.js', APL_URL . 'includes/js/jquery.liveFilter.js', array(), APL_VERSION, true );
+    }
 
 	function search_template( $template ) {
 

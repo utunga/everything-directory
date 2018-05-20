@@ -15,13 +15,13 @@ class EverythingDirectory_Listing_Sidebar_Widget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		
+        global $post;
+        $listing = build_listing(get_post($post->ID));
+
 		$instance = wp_parse_args( (array) $instance, array(
 			'title'       => '',
 		) );
 
-		global $_everythingdir_taxonomies;
-
-		$listings_taxonomies = $_everythingdir_taxonomies->get_taxonomies();
 
 		extract( $args );
 
@@ -29,7 +29,7 @@ class EverythingDirectory_Listing_Sidebar_Widget extends WP_Widget {
 
 		if ( $instance['title'] ) echo $before_title . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $after_title;
 
-		    echo listing_sidebar_view();
+		    echo listing_sidebar_view($listing);
 
 		echo $after_widget;
 

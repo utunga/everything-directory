@@ -5,6 +5,38 @@
  */
 
 
+// UTIL functions 
+
+/**
+ * Returns true if the given predicate is true for all elements.
+ */
+function array_every(callable $callback, array $arr) {
+  foreach ($arr as $element) {
+    if (!$callback($element)) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+/**
+ * Returns true if the given predicate is true for at least one element.
+ */
+function array_any(callable $callback, array $arr) {
+  foreach ($arr as $element) {
+    if ($callback($element)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Returns true if item content not empty
+ */
+function not_empty($item) {
+    return (trim($item));
+}
+
 /**
  * This function redirects the user to an admin page, and adds query args
  * to the URL string for alerts, etc.
@@ -51,10 +83,34 @@ function everythingdir_listing_sidebar() {
 }
 
 
-function listing_a_z_view() {
+function listing_a_z_view($title, $listing) {
     include( dirname( __FILE__ ) . '/views/listing-a-z-view.php' );
 }
 
-function listing_sidebar_view() {
+function listing_sidebar_view($listing) {
     include( dirname( __FILE__ ) . '/views/listing-sidebar-view.php' );
+}
+
+// only works within the_loop
+function build_listing($page) {
+    
+    $services = array_filter(array(get_field('service_0'),  get_field('service_1'),  get_field('service_2')));
+    return (object) [
+        "ID" => $page->ID,
+        "slug" => $page->post_name,
+	    "contact_name" => get_field("contact_name"),
+	    "address" => get_field("address"),
+	    "phone_number" => get_field("phone_number"),
+	    "email_address" => get_field("email_address"),
+	    "opening_hours" => get_field("opening_hours"),
+	    "duration" => get_field("duration"),
+	    "map" => get_field("map"),
+	    "website" => get_field("website"),
+	    "logo" => get_field("logo"),
+	    "short_description" => get_field("short_description"),
+        "services" => $services,
+        "title" => get_the_title()
+       
+    ];
+    
 }

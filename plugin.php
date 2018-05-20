@@ -83,6 +83,7 @@ function everythingdir_listings_init() {
     //require_once( dirname( __FILE__ ) . '/includes/class-featured-listings-widget.php' );
     //require_once( dirname( __FILE__ ) . '/includes/class-property-search-widget.php' );
     require_once( dirname( __FILE__ ) . '/includes/class-listings-widget.php' );
+    require_once( dirname( __FILE__ ) . '/includes/class-a-to-z-widget.php' );
     require_once( dirname( __FILE__ ) . '/includes/class-listing-sidebar-widget.php' );
 
 	/** Instantiate */
@@ -104,7 +105,8 @@ function everythingdir_register_widgets() {
         //'EverythingDirectory_Featured_Listings_Widget',
         //'EverythingDirectory_Listings_Search_Widget',
         'EverythingDirectory_Listing_Sidebar_Widget',
-        'EverythingDirectory_Listings_Widget');
+        'EverythingDirectory_Listings_Widget',
+        'EverythingDirectory_A_to_Z_Widget');
 
 	foreach ( (array) $widgets as $widget ) {
 		register_widget( $widget );
