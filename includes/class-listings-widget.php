@@ -1,6 +1,6 @@
 <?php
 /**
- * This widget presents loop content, based on your input, specifically for the homepage.
+ * This widget presents loop content, based on your input, for category listing pages
  *
  * @package EverythingDirectory
  * @author  Miles Thompson

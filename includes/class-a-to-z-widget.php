@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * This widget presents the entire list of all posts in a-z format
  *
@@ -76,10 +76,24 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             });
           });
         </script>
-        <input id="livefilter-input" type="text" value="">
-        <div id="a_to_z_widget" class="directory-widget"> 
+        <div id="a_to_z_widget" class="directory-widget">
+            <div class="a_to_z_searchbar">
+                <div class="wrap">
+                    <input id="livefilter-input" class="search" type="text" value="">
+                    <input type="button" value="search" class="search_button" />
+                </div>
+            </div>
+            <div class="a_to_z_jumplinks">
+            <ul>
+                <li><a href="#a">A-J</a></li>
+                <li><a href="#a">K-N</a></li>
+                <li><a href="#a">O-S</a></li>
+                <li><a href="#a">T-Z</a></li>
+            </ul>
+        </div>
+
         <?php
-                
+
             $listings = array();
 
             $listings_query = new WP_Query( $args );
@@ -96,7 +110,7 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
 
             foreach($listings_by_letter as $letter=> $listings) {
                 ?>
-                <div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div>
+             <a name="<?php echo $letter ?>"><div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div></a>
                 <div class="a_to_z_section">
                     <?php
                     foreach ($listings as $title => $listing)
@@ -107,18 +121,17 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             }
 
             wp_reset_postdata();
-                  
+
         ?>
-        </div>
+        </div>   
         <?php
-		echo $after_widget;
+         echo $after_widget;
+    }
 
-	}
+    function update( $new_instance, $old_instance ) {
+        return $new_instance;
+    }
 
-	function update( $new_instance, $old_instance ) {
-		return $new_instance;
-	}
-
-	function form( $instance ) {
-	}
+    function form( $instance ) {
+    }
 }

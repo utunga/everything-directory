@@ -302,7 +302,7 @@ class EverythingDirectory_Taxonomies {
         }
 
         //register_taxonomy( 'post_tag', array(  'listing', 'post' ));
-        //register_taxonomy( 'post_category', array( 'listing', 'post' ));
+        //register_taxonomy( 'category', array('post',  'listing' ));
 
 	}
 
