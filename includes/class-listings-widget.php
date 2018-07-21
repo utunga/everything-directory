@@ -106,12 +106,6 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
 	}
 }
 
-function render_listing_widget_for_category($category, $show_title=true, $show_intro=true)  {
-    
-     $instance = array(
-           'category' => $category,
-           'show_title' => $show_title,
-           'show_intro' => $show_intro
-     );
+function render_listing_widget_for_category($instance)  {
      the_widget('EverythingDirectory_Listings_Widget', $instance);
 }

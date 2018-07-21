@@ -47,7 +47,7 @@ class EverythingDirectory_Category_List_Widget extends WP_Widget {
                 
                 foreach($categories as $cat) {
                         $cat_title =  $cat->name;
-                        $key_image = get_field('key_image', 'category'.'_'.$cat->term_id);
+                        $key_image = get_field('banner_image', 'category'.'_'.$cat->term_id);
                  ?>
                         <li class="category_item <?php echo $cat->slug ?>">
                             <a href="<?php echo get_category_link($cat->term_id) ?>" />
