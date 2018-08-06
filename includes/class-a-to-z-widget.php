@@ -33,18 +33,22 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
     function expand_out_listings($listings) {
         $result = array();
         foreach ($listings as $title => $listing) {
-            if ($listing->services):
+            if ($listing->services)
+            {
                 foreach($listing->services as $service) {
                     $use_this_title = $service->name . " - " . $listing->title;
-                    $listing->display_title = $this->display_title_from_title($use_this_title);
                     $sort_title = $this->sort_title_from_title($use_this_title);
-                    $result[$sort_title] = $listing;
+                    $tmp = clone $listing;
+                    $tmp->display_title = $this->display_title_from_title($use_this_title);
+                    $result[$sort_title] = $tmp;
                 }
-            else:
+            }                    
+            else 
+            {
                 $listing->display_title = $this->display_title_from_title($title);
                 $sort_title = $this->sort_title_from_title($title);
                 $result[$sort_title] = $listing;
-            endif;
+            }
 
         }
         return $result;            
@@ -56,7 +60,8 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             $letter = strtoupper($sort_title)[0];
             if (!array_key_exists($letter, $result))
                 $result[$letter] = array();
-           $result[$letter][$sort_title] = $listing;
+            $result[$letter][$sort_title] = $listing;
+            ksort($result[$letter]);
         }
         ksort($result);
         return $result;            
@@ -130,15 +135,17 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             endif;
 
             $listings = $this->expand_out_listings($listings);
-            ksort($listings);
             $listings_by_letter = $this->index_by_first_letter($listings);
-
+            ksort($listings);
+          
             foreach($listings_by_letter as $letter => $listings) {  ?>
                 <a id="<?php echo $letter ?>"><div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div></a>
                 <div class="a_to_z_section">
                     <?php
-                    foreach ($listings as $title => $listing)
+                    foreach ($listings as $sort_title => $listing) 
+                    {
                         echo listing_a_z_view($listing->display_title,$listing);
+                    }
                     ?>
                 </div>
                 <?php
