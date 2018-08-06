@@ -109,8 +109,9 @@ function build_listing($page) {
 	    "logo" => get_field("logo"),
 	    "short_description" => get_field("short_description"),
         "services" => $services,
-        "title" => get_the_title()
-       
+        "title" => get_the_title(),
+        "has_content" =>  !empty($page->post_content),
+        "page_link" => get_page_link($page->ID)
     ];
     
 }

@@ -13,35 +13,50 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
 		parent::__construct( 'a-to-z-widget', __( 'A_to_Z - Listings', 'everything-directory' ), $widget_ops, $control_ops );
 	}
 
+    function sort_title_from_title($title) {
+        $tmp = mb_strtolower($title, 'UTF-8');
+        $tmp = preg_replace('/^paekakariki /', '', $tmp);
+        $tmp = preg_replace('/^paekākāriki /u', '', $tmp);
+        $tmp = preg_replace('/^the /', '', $tmp);
+        $tmp = preg_replace('/^a /', '', $tmp);
+        if (empty($tmp))
+            $tmp = "_";
+        return $tmp;
+    }
+
+    function display_title_from_title($title) {
+        // don't even get me started
+        $title = preg_replace('/paekakariki/i', 'Paekākāriki', $title);
+        return $title;
+    }
+
     function expand_out_listings($listings) {
         $result = array();
         foreach ($listings as $title => $listing) {
             if ($listing->services):
                 foreach($listing->services as $service) {
                     $use_this_title = $service->name . " - " . $listing->title;
-                    $result[$use_this_title] = $listing;
+                    $listing->display_title = $this->display_title_from_title($use_this_title);
+                    $sort_title = $this->sort_title_from_title($use_this_title);
+                    $result[$sort_title] = $listing;
                 }
             else:
-                $result[$title] = $listing;
+                $listing->display_title = $this->display_title_from_title($title);
+                $sort_title = $this->sort_title_from_title($title);
+                $result[$sort_title] = $listing;
             endif;
+
         }
         return $result;            
     }
 
-     function index_by_first_letter($sorted_listings) {
+    function index_by_first_letter($sorted_listings) {
         $result = array();
-        foreach ($sorted_listings as $title_to_use => $listing) {
-            $tmp = mb_strtolower($title_to_use, 'UTF-8');
-            $tmp = preg_replace('/^paekakariki /', '', $tmp);
-            $tmp = preg_replace('/^paekākāriki /u', '', $tmp);
-            $tmp = preg_replace('/^the /', '', $tmp);
-            $tmp = preg_replace('/^a /', '', $tmp);
-            if (empty($tmp))
-                $tmp = "_";
-            $letter = strtoupper($tmp)[0];
+        foreach ($sorted_listings as $sort_title => $listing) {
+            $letter = strtoupper($sort_title)[0];
             if (!array_key_exists($letter, $result))
                 $result[$letter] = array();
-           $result[$letter][$title_to_use] = $listing;
+           $result[$letter][$sort_title] = $listing;
         }
         ksort($result);
         return $result;            
@@ -75,6 +90,15 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
                     }
                 }
             });
+            $(".a_to_z_jumplinks a").click(function(event) {
+                event.preventDefault();
+                nowTop = $(this).offset().top;
+                targetTop = $($(this).attr("href")).offset().top;
+
+                $('html, body').animate({
+                    scrollTop: targetTop - nowTop + 60
+                });            
+            });
           });
         </script>
         <div id="a_to_z_widget" class="directory-widget">
@@ -86,10 +110,10 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             </div>
             <div class="a_to_z_jumplinks">
             <ul>
-                <li><a href="#a">A-J</a></li>
-                <li><a href="#a">K-N</a></li>
-                <li><a href="#a">O-S</a></li>
-                <li><a href="#a">T-Z</a></li>
+                <li><a href="#A">A-J</a></li>
+                <li><a href="#K">K-N</a></li>
+                <li><a href="#O">O-S</a></li>
+                <li><a href="#T">T-Z</a></li>
             </ul>
         </div>
 
@@ -109,13 +133,12 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             ksort($listings);
             $listings_by_letter = $this->index_by_first_letter($listings);
 
-            foreach($listings_by_letter as $letter=> $listings) {
-                ?>
-             <a name="<?php echo $letter ?>"><div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div></a>
+            foreach($listings_by_letter as $letter => $listings) {  ?>
+                <a id="<?php echo $letter ?>"><div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div></a>
                 <div class="a_to_z_section">
                     <?php
                     foreach ($listings as $title => $listing)
-                        echo listing_a_z_view($title,$listing);
+                        echo listing_a_z_view($listing->display_title,$listing);
                     ?>
                 </div>
                 <?php

@@ -129,8 +129,6 @@ class EverythingDirectory_Listings {
 	        return;
 
 
-
-
         $property_details = $_POST['ap'];
 
         /** Store the custom fields */
