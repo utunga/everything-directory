@@ -162,11 +162,10 @@ class EverythingDirectory_Listings {
 
 		$columns = array(
 			'cb'                 => '<input type="checkbox" />',
-			'listing_thumbnail'  => __( 'Thumbnail', 'everything-directory' ),
 			'title'              => __( 'Listing Title', 'everything-directory' ),
-			'listing_details'    => __( 'Details', 'everything-directory' ),
-			'listing_services'   => __( 'Services', 'everything-directory' ),
-			'listing_categories' => __( 'Categories', 'everything-directory' )
+			'listing_details'    => __( 'Description', 'everything-directory' ),
+            'listing_thumbnail'  => __( 'Featured', 'everything-directory' ),
+			'listing_categories' => __( 'Taxonomy', 'everything-directory' ),
 		);
 
 		return $columns;
@@ -181,24 +180,26 @@ class EverythingDirectory_Listings {
 		global $post, $wp_taxonomies;
 
 		switch( $column ) {
-			case "listing_thumbnail":
-				printf( '<p>%s</p>', genesis_get_image( array( 'size' => 'thumbnail' ) ) );
-				break;
 			case "listing_details":
-				foreach ( (array) $this->property_details['col1'] as $label => $key ) {
-					printf( '<b>%s</b> %s<br />', esc_html( $label ), esc_html( get_post_meta($post->ID, $key, true) ) );
-				}
-				foreach ( (array) $this->property_details['col2'] as $label => $key ) {
-					printf( '<b>%s</b> %s<br />', esc_html( $label ), esc_html( get_post_meta($post->ID, $key, true) ) );
-				}
+				printf( '%s', get_field("short_description"));
 				break;
-			case "listing_services":
-				echo get_the_term_list( $post->ID, 'service', '', ', ', '' );
-				break;
+
 			case "listing_categories":
 				foreach ( (array) get_option( $this->settings_field ) as $key => $data ) {
+                    if ($key=='service') 
+                        continue;
 					printf( '<b>%s:</b> %s<br />', esc_html( $data['labels']['singular_name'] ), get_the_term_list( $post->ID, $key, '', ', ', '' ) );
 				}
+                $services = array_filter(array(get_field('service_0'),  get_field('service_1'),  get_field('service_2')));
+                printf( '<b>Services: </b>');
+                $prefix = '';
+                foreach ( $services as $service ) {
+                    printf( '%s%s', $prefix, $service->name );
+                    $prefix=', ';
+				}
+				break;
+			case "listing_thumbnail":
+				printf( '<p>%s</p>', genesis_get_image( array( 'size' => 'full' ) ) );
 				break;
 		}
 
