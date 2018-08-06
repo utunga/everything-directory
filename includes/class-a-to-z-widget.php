@@ -55,24 +55,25 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
         $args = array(
             'post_type'   => 'listing',
             'post_status' => 'publish',
+            'posts_per_page' => -1
             );
         ?>
         <script>
 
-         jQuery(document).ready(function ($) {
-             $('#a_to_z_widget').liveFilter('#livefilter-input', '.a_to_z_section', {
-                 filterChildSelector: '.directory-item',
-                 filter: function (el, val) {
-                     return $(el).text().toUpperCase().indexOf(val.toUpperCase()) >= 0;
-                 },
-                 after: function (contains, containsNot) {
-                     if (containsNot.length) {
-                         $(".a_to_z_letter_heading").hide();
-                     }
-                     else {
-                         $(".a_to_z_letter_heading").show();
-                     }
-                 }
+        jQuery(document).ready(function ($) {
+            $('#a_to_z_widget').liveFilter('#livefilter-input', '.a_to_z_section', {
+                filterChildSelector: '.directory-item',
+                filter: function (el, val) {
+                    return $(el).text().toUpperCase().indexOf(val.toUpperCase()) >= 0;
+                },
+                after: function (contains, containsNot) {
+                    if (containsNot.length) {
+                        $(".a_to_z_letter_heading").hide();
+                    }
+                    else {
+                        $(".a_to_z_letter_heading").show();
+                    }
+                }
             });
           });
         </script>
