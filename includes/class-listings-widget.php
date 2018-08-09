@@ -48,10 +48,11 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
               )
              );
             ?>
-            <div class="directory-widget">
+            <div id="foldable_<?php echo $cat->slug ?>">
+            <div class="directory-widget" data-foldable-role="group">
                 <?php if ($show_title)  {?>
                     
-                    <div class="directory-widget-header">
+                    <div class="directory-widget-header" data-foldable-role="trigger">
                     <h2><?php echo $title ?></h2>
                         <?php if ($show_intro && (trim($intro_text))) { ?>
                             <div class="intro-text">
@@ -63,7 +64,7 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
                 }
                 elseif ($show_intro)  {?>
                     
-                    <div class="directory-widget-header">
+                    <div class="directory-widget-header" data-foldable-role="trigger">
                         <?php if (trim($intro_text)) { ?>
                             <div class="intro-text">
                                 <?php echo $intro_text ?>
@@ -74,16 +75,28 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
                 }
                     $listings = new WP_Query( $args );
                     if( $listings->have_posts() ) :
-
+                
+                        ?><div data-foldable-role="target"><?php
                                 while( $listings->have_posts()) : $listings->the_post();
                                     echo listing_a_z_view(get_the_title(), build_listing($listings->post));
                                 endwhile;
                                 wp_reset_postdata();
+                        ?></div><?php
+
                     else :
                         esc_html_e( 'No listings in this category', 'text-domain' );
                     endif;
                 ?>
                 </div>
+                </div>  
+                <script>
+                 jQuery(document).ready(function($) {
+                    $("#foldable_<?php echo $cat->slug ?>").foldable({
+                        hash: true,
+                        theme: "blue"
+                    });
+                });
+                </script>
                 <?php
 			$toggle = $toggle == 'left' ? 'right' : 'left';
 
