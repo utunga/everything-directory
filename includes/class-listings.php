@@ -164,8 +164,8 @@ class EverythingDirectory_Listings {
 			'cb'                 => '<input type="checkbox" />',
 			'title'              => __( 'Listing Title', 'everything-directory' ),
 			'listing_details'    => __( 'Description', 'everything-directory' ),
-            'listing_thumbnail'  => __( 'Featured', 'everything-directory' ),
 			'listing_categories' => __( 'Taxonomy', 'everything-directory' ),
+            'listing_thumbnail'  => __( 'Featured Logo', 'everything-directory' ),			
 		);
 
 		return $columns;
@@ -199,7 +199,11 @@ class EverythingDirectory_Listings {
 				}
 				break;
 			case "listing_thumbnail":
-				printf( '<p>%s</p>', genesis_get_image( array( 'size' => 'full' ) ) );
+				$image = get_field("logo");
+				if( !empty($image) ): 
+					$url = $image['url'];
+					printf( '<p><img src="%s" width="120" height="120"></p>', $url);
+				endif;
 				break;
 		}
 
