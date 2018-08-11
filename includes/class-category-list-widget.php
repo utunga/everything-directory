@@ -43,15 +43,14 @@ class EverythingDirectory_Category_List_Widget extends WP_Widget {
             </div>
             <ul class="category_list_container">
                 <?php
-
                 
                 foreach($categories as $cat) {
                         $cat_title =  $cat->name;
-                        $key_image = get_field('banner_image', 'category'.'_'.$cat->term_id);
+                        $key_image_id = get_field('banner_image', 'category'.'_'.$cat->term_id);
                  ?>
                         <li class="category_item <?php echo $cat->slug ?>">
                             <a href="<?php echo get_category_link($cat->term_id) ?>" />
-                                <img src="<?php echo $key_image["url"] ?>" />
+                                <?php echo wp_get_attachment_image( $key_image_id, 'full' ); ?>
                                 <div class="category_title">
                                         <?php echo $cat_title ?>
                                 </div>

@@ -21,7 +21,7 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
 		) );
 
 		extract( $args );
-
+      
 		echo $before_widget;
 
             if ( $instance['title'] ) echo $before_title . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $after_title;
@@ -32,27 +32,31 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
             $title = array_key_exists('title', $instance) && $instance['title'] ? $instance['title'] : $cat->name;
             $show_title = array_key_exists('show_title', $instance) ?  $instance['show_title'] : true;
             $show_intro = array_key_exists('show_intro', $instance) ?  $instance['show_intro'] : true;
-            
+            $foldable = array_key_exists('foldable', $instance) ?  $instance['foldable'] : true;
+           
             $intro_text = get_term_meta( $cat->term_id, 'intro_text', true );
 	        $intro_text = apply_filters( 'genesis_term_intro_text_output', $intro_text ? $intro_text : '' );
 
             $args = array(
-              'post_type'   => 'listing',
-              'post_status' => 'publish',
-              'tax_query'   => array(
-                  array(
-                      'taxonomy' => 'category',
-                      'field'    => 'slug',
-                      'terms'    => $cat->slug
-                  )
-              )
-             );
+                'post_type'   => 'listing',
+                'post_status' => 'publish',
+                'tax_query'   => array(
+                    array(
+                        'taxonomy' => 'category',
+                        'field'    => 'slug',
+                        'terms'    => $cat->slug
+                    )
+                )
+            );
+
+            $listings = new WP_Query( $args );
+            
             ?>
-            <div id="foldable_<?php echo $cat->slug ?>">
-            <div class="directory-widget" data-foldable-role="group">
+            <div id="cat_<?php echo $cat->slug ?>" <?php if ($foldable) { echo 'class="foldable"'; } ?>>
+            <div class="directory-widget" <?php if ($foldable) { echo 'data-foldable-role="group"'; } ?>>
                 <?php if ($show_title)  {?>
                     
-                    <div class="directory-widget-header" data-foldable-role="trigger">
+                    <div class="directory-widget-header" <?php if ($foldable) { echo 'data-foldable-role="trigger"'; } ?>>
                     <h2><?php echo $title ?></h2>
                         <?php if ($show_intro && (trim($intro_text))) { ?>
                             <div class="intro-text">
@@ -64,7 +68,7 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
                 }
                 elseif ($show_intro)  {?>
                     
-                    <div class="directory-widget-header" data-foldable-role="trigger">
+                    <div class="directory-widget-header" <?php if ($foldable) { echo 'data-foldable-role="trigger"'; } ?>>
                         <?php if (trim($intro_text)) { ?>
                             <div class="intro-text">
                                 <?php echo $intro_text ?>
@@ -73,30 +77,35 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
                     </div>
                 <?php
                 }
-                    $listings = new WP_Query( $args );
                     if( $listings->have_posts() ) :
-                
-                        ?><div data-foldable-role="target"><?php
-                                while( $listings->have_posts()) : $listings->the_post();
-                                    echo listing_a_z_view(get_the_title(), build_listing($listings->post));
-                                endwhile;
-                                wp_reset_postdata();
-                        ?></div><?php
+                        if ($foldable) { 
+                            echo '<div data-foldable-role="target">'; 
+                        } else {
+                            echo '<div>'; 
+                        }
 
+                        while( $listings->have_posts()) : $listings->the_post();
+                            echo listing_a_z_view(get_the_title(), build_listing($listings->post));
+                        endwhile;
+                        wp_reset_postdata();
+
+                        echo '</div>';
                     else :
                         esc_html_e( 'No listings in this category', 'text-domain' );
                     endif;
                 ?>
                 </div>
-                </div>  
+                </div>
+                <?php if ($foldable) {  ?>
                 <script>
-                 jQuery(document).ready(function($) {
-                    $("#foldable_<?php echo $cat->slug ?>").foldable({
+                jQuery(document).ready(function($) {
+                    $("#cat_<?php echo $cat->slug ?>").foldable({
                         hash: true,
                         theme: "blue"
                     });
                 });
                 </script>
+                <?php } ?>
                 <?php
 			$toggle = $toggle == 'left' ? 'right' : 'left';
 
