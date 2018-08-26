@@ -61,6 +61,16 @@ class EverythingDirectory_Listings {
 
 		add_filter( 'genesis_build_crumbs', array( $this, 'breadcrumbs' ), 10, 2 );
 
+
+        function filter_listings_orderby(  $q) { 
+            if ( $q->is_main_query()  
+                 && ( $q->is_search() || $q->is_post_type_archive( 'listing' ) )
+            ) {
+                $q->set( 'order', 'ASC');
+                $q->set( 'orderby', 'slug');
+            }
+        }; 
+        add_action( 'pre_get_posts', 'filter_listings_orderby');
 	}
 
 	/**
@@ -143,16 +153,6 @@ class EverythingDirectory_Listings {
 
         }
 
-         //* extra check for price that can create a sortable value
-         if ( isset( $property_details['_listing_price'] ) && ! empty( $property_details['_listing_price'] ) ) {
-
-             $price_sortable	= preg_replace( '/[^0-9\.]/', '', $property_details['_listing_price'] );
-             update_post_meta( $post_id, '_listing_price_sortable', floatval( $price_sortable ) );
-
-         } else {
-             delete_post_meta( $post_id, '_listing_price_sortable' );
-         }
-
 	}
 
 	/**
@@ -165,6 +165,7 @@ class EverythingDirectory_Listings {
 			'title'              => __( 'Listing Title', 'everything-directory' ),
 			'listing_details'    => __( 'Description', 'everything-directory' ),
 			'listing_categories' => __( 'Taxonomy', 'everything-directory' ),
+            'listing_slug'  => __( 'Slug', 'everything-directory' ),	
             'listing_thumbnail'  => __( 'Featured Logo', 'everything-directory' ),			
 		);
 
@@ -198,6 +199,11 @@ class EverythingDirectory_Listings {
                     $prefix=', ';
 				}
 				break;
+
+			case "listing_slug":
+				printf( '%s', get_post_field( 'post_name', get_post() ));
+				break;
+
 			case "listing_thumbnail":
 				$image = get_field("logo");
 				if( !empty($image) ): 
