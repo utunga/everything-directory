@@ -101,7 +101,7 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
                 targetTop = $($(this).attr("href")).offset().top;
 
                 $('html, body').animate({
-                    scrollTop: targetTop - nowTop + 60
+                    scrollTop: targetTop - nowTop;
                 });            
             });
           });
@@ -154,7 +154,7 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             wp_reset_postdata();
 
         ?>
-        </div>   
+        </div>
         <?php
          echo $after_widget;
     }
