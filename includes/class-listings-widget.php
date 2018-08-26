@@ -40,6 +40,8 @@ class EverythingDirectory_Listings_Widget extends WP_Widget {
             $args = array(
                 'post_type'   => 'listing',
                 'post_status' => 'publish',
+                'posts_per_page' => -1,
+                'orderby'   => 'slug',
                 'tax_query'   => array(
                     array(
                         'taxonomy' => 'category',
