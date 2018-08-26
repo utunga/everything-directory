@@ -25,6 +25,7 @@ class EverythingDirectory_Category_List_Widget extends WP_Widget {
         $args = [
             'taxonomy'  => 'category',
             'parent'    => $dir_of_everything_cat->term_id,
+            'orderby'   => 'slug',
             'hide_empty'    => false, 
         ];
         $categories = get_terms($args);
