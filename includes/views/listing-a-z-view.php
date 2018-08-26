@@ -18,21 +18,24 @@
 ?>
 
 <div class="directory-item">
-
     <div class="directory-row">
-        <div class="title"> <?php
+        <div class="title"><?php
             if ($has_content) 
             {
                 printf('<a class="listing_title_link" href="%s">%s</a>', $page_link, $title);  
             }
+            //else if (not_empty($website)) 
+            //{
+            //    printf('<a class="listing_title_link" href="%s">%s</a>', $website, $title);  
+            //}
             else {
                 printf('%s', $title);  
             } ?>
         </div>
         <?php
             if (not_empty($website)) {
-                echo '<div class="item-lg">';  
-                echo sprintf( '<div class="website"><a href="%s" target="_blank">Visit website</a></div>',$website);  
+                echo '<div class="website">';  
+                echo sprintf( '<div class="website-link"><a href="%s" target="_blank">Visit website ➚</a></div>',$website);  
                 echo('</div>'); 
             }
         ?> 
@@ -56,7 +59,7 @@
     </div>
     <?php } ?>
  
-    <?php if ($has_taxonomy_row) { ?>
+    <?php if ($has_taxonomy_row or $has_content) { ?>
     <div class="directory-row taxonomy"><?php 
         if ($has_content) 
         {
