@@ -101,7 +101,7 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
                 targetTop = $($(this).attr("href")).offset().top;
 
                 $('html, body').animate({
-                    scrollTop: targetTop - nowTop;
+                    scrollTop: (targetTop-220)
                 });            
             });
           });
