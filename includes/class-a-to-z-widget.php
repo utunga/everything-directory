@@ -84,7 +84,10 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             $('#a_to_z_widget').liveFilter('#livefilter-input', '.a_to_z_section', {
                 filterChildSelector: '.directory-item',
                 filter: function (el, val) {
-                    return $(el).text().toUpperCase().indexOf(val.toUpperCase()) >= 0;
+                    var title = $(el).find(".title").text();
+                    var tags = $(el).find(".tag").text();
+                    console.log((title + " " + tags));
+                    return (title + " " + tags).toUpperCase().indexOf(val.toUpperCase()) >= 0;
                 },
                 after: function (contains, containsNot) {
                     if (containsNot.length) {
@@ -109,7 +112,7 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
         <div id="a_to_z_widget" class="directory-widget">
             <div class="a_to_z_searchbar">
                 <div class="wrap">
-                    <input id="livefilter-input" class="search" type="text" value="">
+                    <input id="livefilter-input" class="search" type="text" placeholder="Search the A-Z directory" value="">
                     <input type="button" value="search" class="search_button" />
                 </div>
             </div>
