@@ -15,10 +15,7 @@ class EverythingDirectory_Category_List_Widget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 
-        $instance = wp_parse_args( (array) $instance, array(
-			'title'       => '',
-			'intro_text' => __( 'Intro Text', 'everything-directory' )
-		) );
+        $instance = wp_parse_args( (array) $instance, array() );
 
         $dir_of_everything_cat = get_category_by_slug('directory-of-everything'); 
         $a_z_cat = get_category_by_slug('a_z'); 
@@ -31,38 +28,27 @@ class EverythingDirectory_Category_List_Widget extends WP_Widget {
         $categories = get_terms($args);
         array_unshift($categories,$a_z_cat);
            
-        // get title and intro text from 'custom fields' logic if not defined as normal custom field
-        $title = array_key_exists('title', $instance) ? $instance['title'] : get_field('title', 'widget_' . $widget_id);
-        $intro_text = array_key_exists('intro_text', $instance) ? esc_attr($instance['intro_text']) : get_field('intro', 'widget_' . $widget_id);
         ?>
 
-        <div class="directory_category_list">
-            <div class="wrap">
-            <div class="intro_area">
-                <div class="title"><h2><?php echo $title ?></h2></div>
-                <div class="intro_text"><?php echo $intro_text ?></div>
-            </div>
-            <ul class="category_list_container">
-                <?php
+        <ul class="category_list_container">
+            <?php
                 
-                foreach($categories as $cat) {
-                        $cat_title =  $cat->name;
-                        $key_image_id = get_field('banner_image', 'category'.'_'.$cat->term_id);
-                 ?>
-                        <li class="category_item <?php echo $cat->slug ?>">
-                            <a href="<?php echo get_category_link($cat->term_id) ?>" />
-                                <?php echo wp_get_attachment_image( $key_image_id, 'full' ); ?>
-                                <div class="category_title">
-                                        <?php echo $cat_title ?>
-                                </div>
-                            </a>
-                        </li>
-                 <?php
-                }
+            foreach($categories as $cat) {
+                    $cat_title =  $cat->name;
+                    $key_image_id = get_field('banner_image', 'category'.'_'.$cat->term_id);
                 ?>
-            </ul>
-            </div>
-        </div>
+                    <li class="category_item <?php echo $cat->slug ?>">
+                        <a href="<?php echo get_category_link($cat->term_id) ?>" />
+                            <?php echo wp_get_attachment_image( $key_image_id, 'full' ); ?>
+                            <div class="category_title">
+                                    <?php echo $cat_title ?>
+                            </div>
+                        </a>
+                    </li>
+                <?php
+            }
+            ?>
+        </ul>
 
         <?php
            
