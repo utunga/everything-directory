@@ -91,11 +91,16 @@ function listing_sidebar_view($listing) {
     include( dirname( __FILE__ ) . '/views/listing-sidebar-view.php' );
 }
 
+
+function empty_content($str) {
+    return trim(str_replace('&nbsp;','',strip_tags($str, '<img>'))) == '';
+}
+
 // only works within the_loop
 function build_listing($page) {
     
     $services = array_filter(array(get_field('service_0'),  get_field('service_1'),  get_field('service_2')));
-    return (object) [
+    $listing = (object) [
         "ID" => $page->ID,
         "slug" => $page->post_name,
 	    "contact_name" => get_field("contact_name"),
@@ -108,10 +113,26 @@ function build_listing($page) {
 	    "website" => get_field("website"),
 	    "logo" => get_field("logo"),
 	    "short_description" => get_field("short_description"),
+        "long_description" => get_field("long_description"),
         "services" => $services,
         "title" => get_the_title(),
         "has_content" =>  !empty($page->post_content),
-        "page_link" => get_page_link($page->ID)
+        "page_link" => get_page_link($page->ID),
+        "is_redirect_only" => false
     ];
     
+    // if no content to speak of but there is a website link
+    if (!empty_content($listing->website) and
+	    !$listing->has_content and
+	    empty_content($listing->long_description) and
+	    empty_content($listing->address) and 
+	    empty_content($listing->phone_number) and 
+	    empty_content($listing->email_address) and 
+	    empty_content($listing->opening_hours) and 
+	    empty_content($listing->short_description))
+    {
+        $listing->is_redirect_only = true;
+    }
+
+    return $listing;
 }

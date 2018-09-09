@@ -15,25 +15,23 @@
     $has_data_row = !empty($address.$opening_hours.$duration.$contact_name.$phone_number.$email_address);
     $has_description_row = !empty($short_description);
     $has_taxonomy_row = $has_content or !empty(post_tags($listing));
+    $is_redirect_only = $listing->is_redirect_only;
 ?>
 
 <div class="directory-item">
     <div class="directory-row">
         <div class="title"><?php
-            if ($has_content) 
-            {
+            if (!$is_redirect_only) {
                 printf('<a class="listing_title_link" href="%s">%s</a>', $page_link, $title);  
             }
-            //else if (not_empty($website)) 
-            //{
-            //    printf('<a class="listing_title_link" href="%s">%s</a>', $website, $title);  
-            //}
             else {
-                printf('%s', $title);  
-            } ?>
+                 printf('<a class="listing_title_link" href="%s">%s <span class="website-link">➚</span></a>', $page_link, $title); 
+            }
+         
+        ?>
         </div>
         <?php
-            if (not_empty($website)) {
+            if (not_empty($website) and !$is_redirect_only) {
                 echo '<div class="website">';  
                 echo sprintf( '<div class="website-link"><a href="%s" target="_blank">Visit website ➚</a></div>',$website);  
                 echo('</div>'); 
