@@ -11,7 +11,14 @@
     $logo = $listing->logo;
     $short_description = $listing->short_description;
 ?>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBezI3iiTQh5FbkfMhBwG1St41i_PqB3VQ"></script>
+
+<!-- FIXME Really this is needed - but it clashes with the 
+     Events calendar pro google maps API !!! key so comment this one out here. 
+
+    PHP/Wordpress is just such a clusterf**k of messy code. Argh!-->
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY ?>;ver=4.4.31"></script>-->
+
+
 <div class="directory-sidebar"><?php
     $location = get_field('map');
     ?>
