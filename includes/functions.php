@@ -100,6 +100,7 @@ function empty_content($str) {
 function build_listing($page) {
     
     $services = array_filter(array(get_field('service_0'),  get_field('service_1'),  get_field('service_2')));
+    $featured_checkboxes = get_field("featured_checkboxes");
     $listing = (object) [
         "ID" => $page->ID,
         "slug" => $page->post_name,
@@ -115,10 +116,14 @@ function build_listing($page) {
 	    "short_description" => get_field("short_description"),
         "long_description" => get_field("long_description"),
         "services" => $services,
+        "supporter" => ( $featured_checkboxes && in_array('supporter', $featured_checkboxes) ),
+        "commercial" => ( $featured_checkboxes && in_array('commercial', $featured_checkboxes) ),
         "title" => get_the_title(),
         "has_content" =>  !empty($page->post_content),
         "page_link" => get_page_link($page->ID),
-        "is_redirect_only" => false
+        "is_featured" => false,
+        "is_redirect_only" => false,
+        "disable_page_link" => false
     ];
     
     // if no content to speak of but there is a website link
@@ -134,5 +139,15 @@ function build_listing($page) {
         $listing->is_redirect_only = true;
     }
 
+    if ($listing->commercial && !$listing->supporter) {
+        $listing->has_content=false;
+        $listing->website = "";
+        $listing->disable_page_link = true;
+        $listing->is_featured = false;
+        $listing->logo = null;
+    }
+    else if ($listing->supporter) {
+        $listing->is_featured = true;
+    }
     return $listing;
 }

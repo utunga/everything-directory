@@ -142,14 +142,16 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
             ksort($listings);
           
             foreach($listings_by_letter as $letter => $listings) {  ?>
-                <a id="<?php echo $letter ?>"><div class="a_to_z_letter_heading"><h3><?php echo $letter ?></h3></div></a>
                 <div class="a_to_z_section">
+                    <div class="a_to_z_letter_heading"><h3><a id="<?php echo $letter ?>"><?php echo $letter ?></a></h3></div>
+                    <div class="a_to_z_listings">
                     <?php
                     foreach ($listings as $sort_title => $listing) 
                     {
                         echo listing_a_z_view($listing->display_title,$listing);
                     }
                     ?>
+                    </div>
                 </div>
                 <?php
             }

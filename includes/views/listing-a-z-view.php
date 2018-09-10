@@ -16,66 +16,80 @@
     $has_description_row = !empty($short_description);
     $has_taxonomy_row = $has_content or !empty(post_tags($listing));
     $is_redirect_only = $listing->is_redirect_only;
+    $disable_page_link = $listing->disable_page_link;
+    $is_featured = $listing->is_featured;
+    $featured_class = ($is_featured) ? "supporter" : "";
 ?>
 
-<div class="directory-item">
-    <div class="directory-row">
-        <div class="title"><?php
-            if (!$is_redirect_only) {
-                printf('<a class="listing_title_link" href="%s">%s</a>', $page_link, $title);  
-            }
-            else {
-                 printf('<a class="listing_title_link" href="%s">%s <span class="website-link">➚</span></a>', $page_link, $title); 
-            }
+<div class="directory-item-container <?php echo $featured_class ?>">
+    <div class="directory-item ">
+        <div class="directory-row title-row">
+            <div class="title"><?php
+                if ($disable_page_link) {
+                    printf('%s', $title);  
+                }
+                else if (!$is_redirect_only) {
+                    printf('<a class="listing_title_link" href="%s">%s</a>', $page_link, $title);  
+                }
+                else {
+                     printf('<a class="listing_title_link" href="%s">%s <span class="website-link">➚</span></a>', $page_link, $title); 
+                }
          
-        ?>
+            ?>
+            </div>
+            <?php
+                if (not_empty($website) and !$is_redirect_only) {
+                    echo '<div class="website">';  
+                    echo sprintf( '<div class="website-link"><a href="%s" target="_blank">Visit website ➚</a></div>',$website);  
+                    echo('</div>'); 
+                }
+            ?> 
         </div>
-        <?php
-            if (not_empty($website) and !$is_redirect_only) {
-                echo '<div class="website">';  
-                echo sprintf( '<div class="website-link"><a href="%s" target="_blank">Visit website ➚</a></div>',$website);  
-                echo('</div>'); 
-            }
-        ?> 
-    </div>
 
-    <?php if ($has_data_row) { ?>
-    <div class="directory-row info-items">
-        <?php 
-            echo itemInDiv($address, "item");
-            echo itemsInDiv(array($opening_hours, $duration), "item");
-            echo itemsInDiv(array($contact_name, $phone_number, $email_address), "item-sm");
-        ?>
-    </div>
-    <?php } ?>
-
-    <?php if ($has_description_row) { ?>
-    <div class="directory-row">
-        <div>
-            <?php echo $short_description ?>
+        <?php if ($has_data_row) { ?>
+        <div class="directory-row info-items">
+            <?php 
+                echo itemInDiv($address, "item");
+                echo itemsInDiv(array($opening_hours, $duration), "item");
+                echo itemsInDiv(array($contact_name, $phone_number, $email_address), "item-sm");
+            ?>
         </div>
-    </div>
-    <?php } ?>
+        <?php } ?>
+
+        <?php if ($has_description_row) { ?>
+        <div class="directory-row">
+            <div>
+                <?php echo $short_description ?>
+            </div>
+        </div>
+        <?php } ?>
  
-    <?php if ($has_taxonomy_row or $has_content) { ?>
-    <div class="directory-row taxonomy"><?php 
-        if ($has_content) 
-        {
-        ?>
-            <div class="more-button">
-            <?php
-                printf( '<a href="%s">&nbsp&nbsp;&nbsp;&nbsp;&nbsp;%s&nbsp;<span class="arrows">&gt;&gt;</span></a>', $page_link, "More" );  
+        <?php if ($has_taxonomy_row or $has_content) { ?>
+        <div class="directory-row taxonomy more-button-row">
+            <div>
+                <?php
+                    echo the_post_tags($listing);
+                ?>
+            </div>
+            <?php 
+            if ($has_content) 
+            {
             ?>
-            </div><?php
-        }
-        ?>
-        <div>
-            <?php
-                echo the_post_tags($listing);
+                <div class="more-button">
+                <?php
+                    printf( '<a href="%s">&nbsp&nbsp;&nbsp;&nbsp;&nbsp;%s&nbsp;<span class="arrows">&gt;&gt;</span></a>', $page_link, "More" );  
+                ?>
+                </div><?php
+            }
             ?>
         </div>
+        <?php } ?>
+
+    </div>
+    <?php if (!empty($logo)) { ?>
+    <div class="directory-logo">
+        <img src="<?php echo $logo['url']; ?>" alt="<?php echo $logo['alt']; ?>" />
     </div>
     <?php } ?>
-
 </div>
 
