@@ -82,11 +82,10 @@ class EverythingDirectory_A_to_Z_Widget extends WP_Widget {
 
         jQuery(document).ready(function ($) {
             $('#a_to_z_widget').liveFilter('#livefilter-input', '.a_to_z_section', {
-                filterChildSelector: '.directory-item',
+                filterChildSelector: '.directory-item-container',
                 filter: function (el, val) {
                     var title = $(el).find(".title").text();
                     var tags = $(el).find(".tag").text();
-                    console.log((title + " " + tags));
                     return (title + " " + tags).toUpperCase().indexOf(val.toUpperCase()) >= 0;
                 },
                 after: function (contains, containsNot) {
