@@ -42,7 +42,7 @@ if (!function_exists( 'services_html')) {
     function the_post_tags($listing) {
         $tmp = "";
         foreach(post_tags($listing) as $tag) {
-            $tmp .= sprintf( '<a class="tag" href="/post_tag/%s">%s</a>', $tag->slug, $tag->name );  
+            $tmp .= sprintf( '<span class="tag">%s</span>', $tag->name );  
         }
         return $tmp;
     }
