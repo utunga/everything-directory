@@ -19,20 +19,32 @@
     $disable_page_link = $listing->disable_page_link;
     $is_featured = $listing->is_featured;
     $featured_class = ($is_featured) ? "supporter" : "";
+
+    $main_link = "";
+    if (!$disable_page_link) {
+        if ($has_content && !empty($page_link)) {
+            $main_link = $page_link;
+        }
+        else if (!empty($website)) {
+            $main_link = $website;
+        }
+    }
 ?>
 
 <div class="directory-item-container <?php echo $featured_class ?>">
     <div class="directory-item ">
         <div class="directory-row title-row">
             <div class="title"><?php
-                if ($disable_page_link) {
-                    printf('%s', $title);  
-                }
-                else if (!$is_redirect_only) {
-                    printf('<a class="listing_title_link" href="%s">%s</a>', $page_link, $title);  
+                if (!empty($main_link)) {
+                    if ($is_redirect_only) {
+                        printf('<a class="listing_title_link" href="%s">%s <span class="website-link">➚</span></a>', $main_link, $title); 
+                    }
+                    else {
+                        printf('<a class="listing_title_link" href="%s">%s</a>', $main_link, $title);  
+                    }
                 }
                 else {
-                     printf('<a class="listing_title_link" href="%s">%s <span class="website-link">➚</span></a>', $page_link, $title); 
+                    printf('%s', $title);
                 }
          
             ?>
@@ -86,10 +98,17 @@
         <?php } ?>
 
     </div>
+
     <?php if (!empty($logo)) { ?>
     <div class="directory-logo">
-        <img src="<?php echo $logo['url']; ?>" alt="<?php echo $logo['alt']; ?>" />
+        <?php if (!empty($main_link)) { ?>
+            <a href="<?php echo $main_link?>">
+        <?php } ?>
+        <img class="sponsor-thumb-size" src="<?php echo $logo['sizes']['sponsor-thumb-size']; ?>" alt="<?php echo $logo['alt']; ?>" />
+        <img class="sponsor-thumb-mobile-size" src="<?php echo $logo['sizes']['sponsor-thumb-mobile-size']; ?>" alt="<?php echo $logo['alt']; ?>" />
+        <?php if (!empty($main_link)) { ?>
+            </a>
+        <?php } ?>   
     </div>
     <?php } ?>
 </div>
-

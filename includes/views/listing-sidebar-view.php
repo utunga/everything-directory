@@ -10,7 +10,6 @@
     $duration = $listing->duration;
     $map = $listing->map;
     $website = $listing->website;
-    $logo = $listing->logo;
     $short_description = $listing->short_description;
     $has_content = $listing->has_content;
     $is_redirect_only = $listing->is_redirect_only;

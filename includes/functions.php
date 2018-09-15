@@ -6,6 +6,8 @@
 
 
 // UTIL functions 
+add_image_size('sponsor-thumb-size', 240, 220, false); // width, height, crop
+add_image_size('sponsor-thumb-mobile-size', 120, 110, false); // width, height, crop
 
 /**
  * Returns true if the given predicate is true for all elements.
@@ -112,20 +114,20 @@ function build_listing($page) {
 	    "duration" => get_field("duration"),
 	    "map" => get_field("map"),
 	    "website" => get_field("website"),
-	    "logo" => get_field("logo"),
+	    "logo" => get_field('logo'), 
 	    "short_description" => get_field("short_description"),
         "long_description" => get_field("long_description"),
         "services" => $services,
         "supporter" => ( $featured_checkboxes && in_array('supporter', $featured_checkboxes) ),
         "commercial" => ( $featured_checkboxes && in_array('commercial', $featured_checkboxes) ),
         "title" => get_the_title(),
-        "has_content" =>  !empty($page->post_content),
+        "has_content" => !empty_content($page->post_content),
         "page_link" => get_page_link($page->ID),
         "is_featured" => false,
         "is_redirect_only" => false,
         "disable_page_link" => false
     ];
-    
+
     // if no content to speak of but there is a website link
     if (!empty_content($listing->website) and
 	    !$listing->has_content and
@@ -140,9 +142,9 @@ function build_listing($page) {
     }
 
     if ($listing->commercial && !$listing->supporter) {
+        $listing->disable_page_link = true;
         $listing->has_content=false;
         $listing->website = "";
-        $listing->disable_page_link = true;
         $listing->is_featured = false;
         $listing->logo = null;
     }
